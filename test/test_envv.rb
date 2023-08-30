@@ -23,6 +23,10 @@ class TestEnvv < Minitest::Test
     assert_equal ENVV, @valid_envv
   end
 
+  def test_should_be_frozen_after_build_succeed
+    assert_raises(FrozenError) { ENVV.build!(schema: @schema, env: @valid_env) }
+  end
+
   def test_fetch_should_return_registry_value
     assert_equal "Hello", @valid_envv.fetch("MY_STRING_VAR")
   end
