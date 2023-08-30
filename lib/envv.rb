@@ -18,27 +18,43 @@ module ENVV
     include ::Singleton
   end
 
+  class Builder
+    attr_reader :schema, :env
+
+    def initialize(schema:, env:)
+      @schema = schema
+      @env = env
+    end
+
+    def call!
+      unless schema.is_a? ::Dry::Schema::Params
+        raise InvalidSchemaError
+      end
+
+      unless env.is_a? ::Enumerable
+        raise InvalidEnvError
+      end
+
+      keys = @schema.key_map.map { |key| key.name }
+      env_vars = @env.select { |name, value| keys.include?(name) }
+      result = @schema.call(env_vars)
+      if result.failure?
+        raise ValidationError
+      else
+        ENVV::Registry.instance.replace result.to_h.transform_keys(&:to_s)
+      end
+    end
+  end
+
   module_function
 
-  def build!(schema:, env: ENV, freeze: true)
-    unless schema.is_a? ::Dry::Schema::Params
-      raise InvalidSchemaError
+  def build!(schema:, env: ENV)
+    unless frozen?
+      builder = Builder.new schema: schema, env: env
+      @coerced_env_vars = builder.call!
+      freeze
     end
-
-    unless env.is_a? ::Enumerable
-      raise InvalidEnvError
-    end
-
-    keys = schema.key_map.map { |key| key.name }
-    env_vars = env.select { |name, value| keys.include?(name) }
-    result = schema.call(env_vars)
-    if result.failure?
-      raise ValidationError
-    else
-      @coerced_env_vars = Registry.instance.replace result.to_h.transform_keys(&:to_s)
-      @coerced_env_vars.freeze if freeze
-    end
-    @coerced_env_vars
+    ENVV
   end
 
   def [](key)
