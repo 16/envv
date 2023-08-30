@@ -4,7 +4,7 @@ require_relative "lib/envv/version"
 
 Gem::Specification.new do |spec|
   spec.name = "envv"
-  spec.version = Envv::VERSION
+  spec.version = ENVV::VERSION
   spec.authors = ["Fabrice Luraine"]
   spec.email = ["16@asciiland.net"]
 

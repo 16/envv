@@ -20,7 +20,7 @@ module ENVV
 
   module_function
 
-  def build!(schema:, env: ENV)
+  def build!(schema:, env: ENV, freeze: true)
     unless schema.is_a? ::Dry::Schema::Params
       raise InvalidSchemaError
     end
@@ -30,14 +30,15 @@ module ENVV
     end
 
     keys = schema.key_map.map { |key| key.name }
-    env_vars = ENV.select { |name, value| keys.include?(name) }
+    env_vars = env.select { |name, value| keys.include?(name) }
     result = schema.call(env_vars)
     if result.failure?
       raise ValidationError
     else
       @coerced_env_vars = Registry.instance.replace result.to_h.transform_keys(&:to_s)
-      @coerced_env_vars.freeze
+      @coerced_env_vars.freeze if freeze
     end
+    @coerced_env_vars
   end
 
   def [](key)
