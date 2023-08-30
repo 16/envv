@@ -12,7 +12,7 @@ class TestEnvv < Minitest::Test
       "MY_STRING_VAR" => "Hello",
       "MY_INT_VAR" => "4000"
     }
-    @envv = ENVV.build!(schema: @schema, env: @valid_env)
+    @valid_envv = ENVV.frozen? ? ENVV : ENVV.build!(schema: @schema, env: @valid_env)
   end
 
   def test_that_it_has_a_version_number
@@ -20,10 +20,10 @@ class TestEnvv < Minitest::Test
   end
 
   def test_should_return_itself_when_build_succeed
-    assert_equal ENVV, ENVV.build!(schema: @schema, env: @valid_env)
+    assert_equal ENVV, @valid_envv
   end
 
   def test_fetch_should_return_registry_value
-    assert_equal "Hello", @envv.fetch("MY_STRING_VAR")
+    assert_equal "Hello", @valid_envv.fetch("MY_STRING_VAR")
   end
 end

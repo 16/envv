@@ -49,11 +49,9 @@ module ENVV
   module_function
 
   def build!(schema:, env: ENV)
-    unless frozen?
-      builder = Builder.new schema: schema, env: env
-      @coerced_env_vars = builder.call!
-      freeze
-    end
+    builder = Builder.new schema: schema, env: env
+    @coerced_env_vars = builder.call!
+    self.freeze
     ENVV
   end
 
