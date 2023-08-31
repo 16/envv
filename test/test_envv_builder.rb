@@ -9,7 +9,6 @@ class TestEnvv::Builder < Minitest::Test
       required(:MY_INT_VAR).filled(:integer, gt?: 3000)
     end
     @invalid_env = {
-      "MY_STRING_VAR" => "Hello",
       "MY_INT_VAR" => "2000"
     }
     @valid_env = {
@@ -19,10 +18,15 @@ class TestEnvv::Builder < Minitest::Test
   end
 
   def test_call_should_fail_when_env_vars_doesnt_match_schema
-    assert_raises(ENVV::ValidationError) { ENVV::Builder.new(schema: @schema, env: @invalid_env).call! }
+    error = assert_raises(ENVV::ValidationError) do
+      ENVV::Builder.new(schema: @schema, env: @invalid_env).call!
+    end
+    assert_equal 2, error.error_messages.size
   end
 
   def test_build_should_return_registry_when_env_vars_validation_succeed
     assert_kind_of ENVV::Registry, ENVV::Builder.new(schema: @schema, env: @valid_env).call!
   end
+
+  # TODO: conditions in schema, like environment
 end

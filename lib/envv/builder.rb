@@ -1,28 +1,24 @@
 # frozen_string_literal: true
 
+require "dry-initializer"
+require "dry/schema"
+
 module ENVV
   class Builder
-    attr_reader :schema, :env
+    extend Dry::Initializer
 
-    def initialize(schema:, env:)
-      @schema = schema
-      @env = env
-    end
+    option :schema
+    option :env
 
     def call!
-      unless schema.is_a? ::Dry::Schema::Params
-        raise InvalidSchemaError
-      end
-
-      unless env.is_a? ::Enumerable
-        raise InvalidEnvError
-      end
+      raise InvalidSchemaError unless schema.is_a?(::Dry::Schema::Params)
+      raise InvalidEnvError unless env.is_a?(::Enumerable)
 
       keys = @schema.key_map.map { |key| key.name }
       env_vars = @env.select { |name, value| keys.include?(name) }
       result = @schema.call(env_vars)
       if result.failure?
-        raise ValidationError
+        raise ValidationError, result.errors(full: true).to_h.values.flatten
       else
         ENVV::Registry.instance.replace result.to_h.transform_keys(&:to_s)
       end
