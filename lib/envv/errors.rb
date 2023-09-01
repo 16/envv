@@ -33,4 +33,10 @@ module ENVV
       messages << " "
     end
   end
+
+  class NotBuilt < Error
+    def initialize
+      super("Undefined registry. You must build ENVV first. See https://github.com/16/envv. ")
+    end
+  end
 end

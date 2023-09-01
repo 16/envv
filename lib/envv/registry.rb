@@ -2,6 +2,5 @@
 
 module ENVV
   class Registry < ::Hash
-    include ::Singleton
   end
 end

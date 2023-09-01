@@ -10,18 +10,16 @@ require_relative "envv/builder"
 module ENVV
   module_function
 
-  def build!(schema:, env: ENV)
-    builder = Builder.new schema: schema, env: env
-    @coerced_env_vars = builder.call!
+  def build!(schema, env = ENV)
+    @registry = Builder.call(schema, env)
     freeze
-    ENVV
   end
 
-  def [](key)
-    @coerced_env_vars[key.to_s]
+  def registry
+    @registry or raise(NotBuilt)
   end
 
-  def fetch(key, *args, **options, &block)
-    @coerced_env_vars.fetch(key.to_s, *args, **options, &block)
+  def fetch(key, *args, &block)
+    registry.fetch(key.to_s, *args, &block)
   end
 end
