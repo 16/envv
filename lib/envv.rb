@@ -45,5 +45,5 @@ module ENVV
     registry.fetch(key.to_s, *args, &block)
   end
 
-  public :build!, :registry, :fetch
+  public :build!, :schema, :registry, :fetch
 end
