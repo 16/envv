@@ -21,22 +21,33 @@ class TestEnvv::Builder < Minitest::Test
     }
   end
 
+  def test_must_be_instanciated_with_a_schema_instance
+    builder = ENVV::Builder.new(@valid_env, @schema)
+    assert_instance_of ENVV::Builder, builder
+  end
+
+  def test_call_should_fail_when_there_is_no_schema_definition
+    assert_raises(ENVV::InvalidSchemaError) do
+      ENVV::Builder.call(@valid_env)
+    end
+  end
+
   def test_call_should_fail_when_env_vars_doesnt_match_schema
     error = assert_raises(ENVV::ValidationError) do
-      ENVV::Builder.call(@schema, @invalid_env)
+      ENVV::Builder.call(@invalid_env, @schema)
     end
     assert_equal 2, error.error_messages.size
   end
 
   def test_build_should_return_a_frozen_registry_when_env_vars_validation_succeed
-    registry = ENVV::Builder.call(@schema, @valid_env)
-    assert_kind_of ENVV::Registry, registry
+    registry = ENVV::Builder.call(@valid_env, @schema)
+    assert_instance_of ENVV::Registry, registry
     assert registry.frozen?
   end
 
   def test_returned_registry_must_have_coerced_values
-    registry = ENVV::Builder.call(@schema, @valid_env)
-    assert_kind_of Integer, registry.fetch("MY_INT_VAR")
-    assert_kind_of TrueClass, registry.fetch("MY_BOOLEAN_VAR")
+    registry = ENVV::Builder.call(@valid_env, @schema)
+    assert_instance_of Integer, registry.fetch("MY_INT_VAR")
+    assert_instance_of TrueClass, registry.fetch("MY_BOOLEAN_VAR")
   end
 end

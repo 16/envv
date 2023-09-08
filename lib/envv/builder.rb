@@ -5,19 +5,21 @@ require "dry/schema"
 
 module ENVV
   class Builder
-    extend Dry::Initializer
-
-    param :schema
-    param :env
+    attr_reader :env, :schema
 
     class << self
-      def call(*params)
-        new(*params).call
+      def call(env, schema = nil)
+        new(env, schema).call
       end
 
       def to_proc
         method(:call).to_proc
       end
+    end
+
+    def initialize(env, schema)
+      @env = env
+      @schema = schema
     end
 
     def call
