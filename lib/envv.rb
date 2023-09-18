@@ -11,7 +11,7 @@ module ENVV
   module_function
 
   # Validates ENV vars with schema rules and store coerced values in ENVV registry
-  # @param [Proc] A block with Dry::Schema.Param rules
+  # @param [Proc] A block with Dry::Schema.Params rules
   # @raise [ENVV::InvalidSchemaError] if env vars requirements are not validated
   # @return [ENVV]
   def build!(&rules)
@@ -38,7 +38,7 @@ module ENVV
   end
 
   # @raise [ENVV::NotBuilt] error if called before ENVV built (see #build!)
-  # @return [Dry::Schema.Param] used to validate environment variables
+  # @return [Dry::Schema.Params] used to validate environment variables
   def schema
     @schema
   end
