@@ -33,7 +33,7 @@ end
 ```
 
 If requirements are not satisfied, it will **raise an exception**. So be sure this validation occurs as soon as possible in the boot process of your application.
-In a Ruby On Rails application, you can place it in an initializer and ensure it will be executed first by naming it `app/initializers/01-envv.rb` for example.
+In a Ruby On Rails application, you can place it in an initializer and ensure it will be executed first by naming it `app/initializers/01-envv.rb` for example, since initializers are run in alphabetical order.
 
 If environment variables are validated, you can now access their coerced value with `ENVV#fetch` method:
 
@@ -64,9 +64,5 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/16/env
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT). See the separate [LICENSE.txt](LICENSE.txt) file. © Copyright 2023 Fabrice Luraine aka asciilander with spacedotspace collective.
 
-
-## Code of Conduct
-
-Everyone interacting in the Envv project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/envv/blob/master/CODE_OF_CONDUCT.md).
