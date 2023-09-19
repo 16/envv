@@ -19,6 +19,10 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
     $ gem install envv
 
+**Requirements**: this library officially supports the following Ruby versions
+
+* MRI `>= 3.0.0`
+
 
 ## Usage
 
