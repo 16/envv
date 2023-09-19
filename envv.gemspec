@@ -8,13 +8,11 @@ Gem::Specification.new do |spec|
   spec.authors = ["Fabrice Luraine"]
   spec.email = ["16@asciiland.net"]
 
-  spec.summary = "Validates environment variables with a schema and gives access to coerced values."
+  spec.summary = "Validates environment variables requirements with a schema and gives access to their coerced values."
   spec.description = ""
   spec.homepage = "https://github.com/16/envv"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
-
-  spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/16/envv"
@@ -32,9 +30,13 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # Uncomment to register a new dependency of your gem
   spec.add_dependency "dry-schema", "~> 1.13"
   spec.add_dependency "dry-initializer", "~> 3.1"
+
+  spec.add_development_dependency "bundler", "~> 2.4"
+  spec.add_development_dependency "rake", "~> 13.0"
+  spec.add_development_dependency "minitest", "~> 5.19"
+  spec.add_development_dependency "standard", "~> 1.31"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

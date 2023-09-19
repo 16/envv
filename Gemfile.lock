@@ -87,6 +87,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bundler (~> 2.4)
   envv!
   minitest (~> 5.0)
   rake (~> 13.0)
