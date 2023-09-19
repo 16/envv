@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    envv (0.1.0)
+    envv (0.1.1)
       dry-initializer (~> 3.1)
       dry-schema (~> 1.13)
 
