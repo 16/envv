@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/envv.svg)](https://badge.fury.io/rb/envv)
+
 ![ENVV banner](doc/banner.svg)
 
 # ENVV
