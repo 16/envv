@@ -9,7 +9,7 @@ class TestEnvv < Minitest::Test
     ENV["MY_BOOLEAN_VAR"] = "0"
 
     @not_built_envv = Class.new do
-      include(ENVV)
+      include(ENVV::Base)
     end.new
 
     @envv = if ENVV.frozen?
