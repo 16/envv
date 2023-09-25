@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Refactoring with a ENVV::Base module to allow writing custom wrappers  
+
 ## [0.1.2] - 2023-09-19
 
 - Fix (again…) changelog_uri in gemspec
