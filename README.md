@@ -55,6 +55,49 @@ ENVV.fetch("MY_INT_VAR") # ⇒ 4000
 ENVV.fetch("MY_BOOLEAN_VAR") # ⇒ true
 ```
 
+### Adding extra features with your own ENVV wrapper
+
+You can include [ENVV::Base](lib/envv/base.rb) in your own class or module and thus provide extra features.
+
+With a module
+
+```ruby
+module MyAppEnv
+  extend ENVV::Base
+
+  def is_dark?
+    fetch("IS_DARK")
+  end
+end
+
+MyAppEnv.build! do
+  required(:IS_DARK).filled(:bool)
+end
+
+# IS_DARK=True
+
+MyAppEnv.is_dark? # => true
+```
+
+With a class
+
+```ruby
+class MyAppEnv
+  include ENVV::Base
+
+  def [](key)
+    fetch(key)
+  end
+end
+
+e = MyAppEnv.new.build! do
+  required(:IS_DARK).filled(:bool)
+end
+e["IS_DARK"] # => true
+```
+
+Be creative !
+
 
 ## Development
 

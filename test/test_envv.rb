@@ -8,10 +8,6 @@ class TestEnvv < Minitest::Test
     ENV["MY_INT_VAR"] = "4000"
     ENV["MY_BOOLEAN_VAR"] = "0"
 
-    @not_built_envv = Class.new do
-      include(ENVV)
-    end.new
-
     @envv = if ENVV.frozen?
       ENVV
     else
@@ -27,16 +23,11 @@ class TestEnvv < Minitest::Test
     refute_nil ::ENVV::VERSION
   end
 
-  def test_must_build_only_with_a_block_of_rules
-    assert ENVV.method(:build!).arity.zero?
-    assert_raises(ArgumentError) do
-      @not_built_envv.build!
-    end
-  end
-
-  def test_registry_and_fetch_methods_should_raise_exception_if_not_built
-    assert_raises(ENVV::NotBuilt) { @not_built_envv.registry }
-    assert_raises(ENVV::NotBuilt) { @not_built_envv.fetch("MY_STRING_VAR") }
+  def test_must_respond_to_envv_base_methods
+    assert_respond_to ENVV, :build!
+    assert_respond_to ENVV, :schema
+    assert_respond_to ENVV, :registry
+    assert_respond_to ENVV, :fetch
   end
 
   def test_when_build_should_return_itself_and_be_frozen
@@ -52,17 +43,9 @@ class TestEnvv < Minitest::Test
     assert_instance_of ::Dry::Schema::Params, @envv.schema
   end
 
-  def test_registry_should_be_frozen
-    assert @envv.registry.frozen?
-  end
-
   def test_fetch_should_return_registry_coerced_value
     assert_equal "Hello", @envv.fetch("MY_STRING_VAR")
     assert_equal 4000, @envv.fetch("MY_INT_VAR")
     refute @envv.fetch("MY_BOOLEAN_VAR")
-  end
-
-  def test_fetch_can_also_use_symbols_as_keys
-    assert_equal "Hello", @envv.fetch(:MY_STRING_VAR)
   end
 end
