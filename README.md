@@ -39,7 +39,7 @@ end
 ```
 
 If requirements are not satisfied, it will **raise an exception**. So be sure this validation occurs as soon as possible in the boot process of your application.
-In a Ruby On Rails application, you can place it in an initializer and ensure it will be executed first by naming it `app/initializers/01-envv.rb` for example, since initializers are run in alphabetical order.
+In a Ruby On Rails application, you can place it in an initializer and ensure it will be executed first by naming it `config/initializers/01-envv.rb` for example, since initializers are run in alphabetical order.
 
 If environment variables are validated, you can now access their coerced value with `ENVV#fetch` method:
 
