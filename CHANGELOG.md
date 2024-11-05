@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Security fixes: Bumps [rexml](https://github.com/ruby/rexml) from 3.2.6 to 3.3.9.
+
 ## [0.2.0] - 2023-09-25
 
 - Refactoring with a ENVV::Base module to allow writing custom wrappers  
